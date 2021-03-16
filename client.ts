@@ -69,7 +69,26 @@ class GameScene extends Phaser.Scene {
     this.wsClient.onopen = (event) => console.log(event);
     // TODO: multiplayer functionality
     this.wsClient.onmessage = (wsMsgEvent) => {
-      console.log(wsMsgEvent)
+      const allCoords: ICoords = JSON.parse(wsMsgEvent.data);
+       for (const playId of Object.keys(allCoords)) {
+        if (playerId === this.id) {
+          continue;
+        }
+        const { x, y, frame } = allCoords[playerId];
+        if (playerId in this.players) {
+          const player = this.players[playerId];
+          if (player.texture.key === "__MISSING") {
+            player.destroy();
+            this.players[playerId] = this.add.sprite(x, y, "player", frame);
+          }else {
+            player.setX(x);
+            player.setY(y);
+            player.setFrame(frame);  
+          }
+        } else {
+          this.players[playerId] = this.add.sprite(x, y, "player", frame);
+        }
+      }
     }
   }
 
