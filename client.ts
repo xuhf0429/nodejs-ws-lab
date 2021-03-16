@@ -10,12 +10,36 @@ interface ICoords {
 
 const DEBUG = false; // Render debug physics entities
 
+function uuid(
+  a?: any
+): string{
+    return a
+    ?(
+      a^
+      Math.random()
+      *16
+      >>a/4
+    ).toString(16)
+    :(
+      1e7.toString()+
+      -1e3 +
+      -4e3 +
+      -8e3 +
+      -1e11
+     ).replace(
+      /[018]/q,
+      uuid
+     )
+ }
+
 class GameScene extends Phaser.Scene {
   private HOST = window.location.hostname; // localhost and 127.0.0.1 handled
   private PORT = 8080; // change this if needed
 
   private VELOCITY = 100;
   private wsClient?: WebSocket;
+  private id = uuid();
+  private players: {[key: string]: Phaser.GameObjects.Sprite} = {};
   private player?: Phaser.GameObjects.Sprite;
   private leftKey?: Phaser.Input.Keyboard.Key;
   private rightKey?: Phaser.Input.Keyboard.Key;
@@ -130,6 +154,13 @@ class GameScene extends Phaser.Scene {
       if (!moving) {
         (this.player.body as Phaser.Physics.Arcade.Body).setVelocity(0);
         this.player.anims.stop();
+      }else if (this.wsClient) {
+        this.wsClient.send(JSON.stringify({
+          id: this.id,
+          x: player.x,
+          y: player.y,
+          frame: player.frame.name
+        }));
       }
       this.player.update();
     }
