@@ -16,8 +16,6 @@ class GameScene extends Phaser.Scene {
 
   private VELOCITY = 100;
   private wsClient?: WebSocket;
-  private id = uuid();
-  private players: {[key: string]: Phaser.GameObjects.Sprite} = {};
   private player?: Phaser.GameObjects.Sprite;
   private leftKey?: Phaser.Input.Keyboard.Key;
   private rightKey?: Phaser.Input.Keyboard.Key;
@@ -136,7 +134,7 @@ class GameScene extends Phaser.Scene {
       this.player.update();
     }
   }
-
+}
 
 // Phaser configuration variables
 const config: GameConfig = {
