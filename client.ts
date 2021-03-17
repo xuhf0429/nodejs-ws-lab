@@ -133,6 +133,7 @@ class GameScene extends Phaser.Scene {
         (this.player.body as Phaser.Physics.Arcade.Body).setVelocity(0);
         this.player.anims.stop();
       }
+      this.player.update();
     }
   }
 
