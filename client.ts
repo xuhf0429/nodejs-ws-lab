@@ -6,32 +6,9 @@ import * as Phaser from "phaser";
 interface ICoords {
   x: number;
   y: number;
-  frame: number;
 }
 
 const DEBUG = false; // Render debug physics entities
-
-function uuid(
-  a?: any
-): string{
-    return a
-    ?(
-      a^
-      Math.random()
-      *16
-      >>a/4
-    ).toString(16)
-    :(
-      1e7.toString()+
-      -1e3 +
-      -4e3 +
-      -8e3 +
-      -1e11
-     ).replace(
-      /[018]/q,
-      uuid
-     )
- }
 
 class GameScene extends Phaser.Scene {
   private HOST = window.location.hostname; // localhost and 127.0.0.1 handled
